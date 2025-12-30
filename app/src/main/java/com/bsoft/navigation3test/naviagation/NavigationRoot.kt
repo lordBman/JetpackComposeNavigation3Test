@@ -4,30 +4,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.bsoft.navigation3test.ui.screens.TodoDetailsScreen
-import com.bsoft.navigation3test.ui.screens.TodoListScreen
 
 @Composable
 fun NavigationRoot(modifier: Modifier = Modifier){
-    val backStack = remember { mutableStateListOf<Route>(Route.Todolist) }
+    val rootBackStack = remember { mutableStateListOf<Route>(Route.Auth) }
 
     NavDisplay(
-        entryDecorators = listOf(
-            rememberSaveableStateHolderNavEntryDecorator(),
-            rememberViewModelStoreNavEntryDecorator{
-                false
+        backStack = rootBackStack, onBack = { rootBackStack.removeLastOrNull() }, entryProvider = entryProvider {
+            entry<Route.Auth> {
+                AuthNavigation(modifier = modifier, onLogin = { rootBackStack.remove(Route.Auth); rootBackStack.add(Route.Todo) })
             }
-        ),
-        backStack = backStack, onBack = { backStack.removeLastOrNull() }, entryProvider = entryProvider {
-            entry<Route.Todolist> {
-                TodoListScreen(modifier = modifier, onclick = { todo -> backStack.add(Route.TodolistDetail(todo))})
-            }
-            entry<Route.TodolistDetail> {
-                TodoDetailsScreen(modifier = modifier, todo = it.todo)
+            entry<Route.Todo> {
+                TodoNavigation(modifier = modifier)
             }
         })
 }
