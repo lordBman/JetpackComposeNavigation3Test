@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.bsoft.navigation3test.ui.screens.TodoDetailsScreen
@@ -13,7 +14,8 @@ import com.bsoft.navigation3test.ui.screens.TodoListScreen
 
 @Composable
 fun TodoNavigation(modifier: Modifier = Modifier) {
-    val todoBackStack = remember { mutableStateListOf<Route>(Route.Todo.Todolist) }
+    //val todoBackStack = remember { mutableStateListOf<Route>(Route.Todo.Todolist) }
+    val todoBackStack = rememberNavBackStack(Route.Todo.Todolist)
 
     NavDisplay(
         modifier = modifier,
